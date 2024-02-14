@@ -1,29 +1,44 @@
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { Shuffle } from 'react-bootstrap-icons';
-import { useAppDispatch } from '../../redux/store';
 import getRandomSeed from '../utils/getRandomSeed';
 import {
   MAX_INPUT_ERRORS_VALUE,
   MAX_RANGE_ERRORS_VALUE,
 } from '../../constants';
-import generateList from '../utils/generateList';
 import selectCountry, { Countries } from '../utils/selectCountry';
 import { FakerItem } from '../../types';
+import { loadMore, uglifyFakers } from '../utils/loadAndUglify';
 
 type ToolbarPropsType = {
   setFakers: React.Dispatch<React.SetStateAction<FakerItem[]>>;
-  fakersCount: number;
+  fakers: FakerItem[];
+  country: Countries;
+  setCountry: React.Dispatch<React.SetStateAction<Countries>>;
+  errorCount: number;
+  setErrorCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function Toolbar({ setFakers, fakersCount }: ToolbarPropsType) {
-  const [errorCount, setErrorCount] = useState(0);
-  const [country, setCountry] = useState<Countries>(Countries.us);
+function Toolbar({
+  setFakers,
+  country,
+  setCountry,
+  fakers,
+  setErrorCount,
+  errorCount,
+}: ToolbarPropsType) {
   const [seed, setSeed] = useState(1);
 
   useEffect(() => {
-    setFakers(generateList(selectCountry(country), fakersCount));
-  }, [country, fakersCount, setFakers]);
+    const currentFaker = selectCountry(country);
+    currentFaker.seed(seed);
+    setFakers(loadMore(currentFaker, 20, [], errorCount));
+  }, []);
+
+  useEffect(() => {
+    if (fakers.length > 0)
+      setFakers(uglifyFakers(fakers, selectCountry(country), errorCount, seed));
+  }, [country, errorCount, setFakers, seed]);
 
   return (
     <Row className="mt-4">

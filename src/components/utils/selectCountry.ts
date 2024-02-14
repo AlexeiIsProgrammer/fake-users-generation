@@ -14,14 +14,10 @@ export enum Countries {
 export default function selectCountry(val: Countries): Faker {
   switch (val) {
     case Countries.DE:
-      console.log('germany');
-
       return fakerDE;
     case Countries.PL:
-      console.log('polan');
       return fakerPL;
     case Countries.US:
-      console.log('usa');
       return fakerUS;
     default:
       return fakerPL;
