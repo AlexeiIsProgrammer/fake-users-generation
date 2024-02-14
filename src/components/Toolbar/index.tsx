@@ -9,6 +9,8 @@ import {
 import selectCountry, { Countries } from '../utils/selectCountry';
 import { FakerItem } from '../../types';
 import { loadMore, uglifyFakers } from '../utils/loadAndUglify';
+import { download, generateCsv } from 'export-to-csv';
+import csvConfig from '../../constants/csv';
 
 type ToolbarPropsType = {
   setFakers: React.Dispatch<React.SetStateAction<FakerItem[]>>;
@@ -60,6 +62,7 @@ function Toolbar({
         <Row className="mb-3 align-items-center">
           <Col>
             <Form.Range
+              step={0.5}
               onChange={(e) => setErrorCount(+e.target.value)}
               value={errorCount}
               min={0}
@@ -100,7 +103,15 @@ function Toolbar({
       </Col>
       <Col className="mb-3">
         <Form.Label>Export:</Form.Label>
-        <Button className="w-100">Export</Button>
+        <Button
+          className="w-100"
+          onClick={() => {
+            const readyCSV = generateCsv(csvConfig)(fakers);
+            download(csvConfig)(readyCSV);
+          }}
+        >
+          Export to csv
+        </Button>
       </Col>
     </Row>
   );

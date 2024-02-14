@@ -1,5 +1,4 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useRef } from 'react';
 import { Alert, Container, Stack, Table } from 'react-bootstrap';
 
 import { FakerItem } from '../../types';
@@ -10,8 +9,6 @@ type FakeTablePropsType = {
 };
 
 function FakeTable({ fakers, scrollFakersHandle }: FakeTablePropsType) {
-  const tableRef = useRef<HTMLTableElement | null>(null);
-
   return (
     <Container>
       <Stack direction="vertical">
@@ -24,7 +21,7 @@ function FakeTable({ fakers, scrollFakersHandle }: FakeTablePropsType) {
             hasMore
             loader={<h4>Loading...</h4>}
           >
-            <Table ref={tableRef} className="mt-2" striped responsive>
+            <Table className="mt-2" striped responsive>
               <thead>
                 <tr>
                   <th>№</th>

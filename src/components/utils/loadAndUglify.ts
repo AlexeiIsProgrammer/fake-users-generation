@@ -2,6 +2,9 @@
 import { Faker } from '@faker-js/faker';
 import { FakerItem } from '../../types';
 
+const getUUID = (faker: Faker): string => {
+  return faker.string.uuid();
+};
 const getName = (faker: Faker): string => {
   return `${faker.person.middleName()} ${faker.person.firstName()} ${faker.person.lastName()}`;
 };
@@ -28,6 +31,7 @@ const uglifyFakers = (
   currentFaker.seed(seed);
   return fakers.map((faker) => ({
     ...faker,
+    uuid: getUUID(currentFaker),
     name: fakerInitialFn(getName(currentFaker)),
     address: fakerInitialFn(getName(currentFaker)),
     phone: fakerInitialFn(getName(currentFaker)),
@@ -44,7 +48,7 @@ const loadMore = (
   for (let i = oldData.length; i < oldData.length + count; i += 1) {
     const fakeItem: FakerItem = {
       id: i + 1,
-      uuid: currentFaker.string.uuid(),
+      uuid: getUUID(currentFaker),
       name: uglifyFn(errorCount)(getName(currentFaker)),
       address: uglifyFn(errorCount)(getAddress(currentFaker)),
       phone: uglifyFn(errorCount)(getPhone(currentFaker)),
