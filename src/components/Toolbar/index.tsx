@@ -31,7 +31,7 @@ function Toolbar({
   errorCount,
   page,
 }: ToolbarPropsType) {
-  const [seed, setSeed] = useState(1);
+  const [seed, setSeed] = useState(0);
 
   useEffect(() => {
     const currentFaker = selectCountry(country);
