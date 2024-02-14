@@ -1,6 +1,7 @@
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { Shuffle } from 'react-bootstrap-icons';
+import { download, generateCsv } from 'export-to-csv';
 import getRandomSeed from '../utils/getRandomSeed';
 import {
   MAX_INPUT_ERRORS_VALUE,
@@ -9,7 +10,6 @@ import {
 import selectCountry, { Countries } from '../utils/selectCountry';
 import { FakerItem } from '../../types';
 import { loadMore, uglifyFakers } from '../utils/loadAndUglify';
-import { download, generateCsv } from 'export-to-csv';
 import csvConfig from '../../constants/csv';
 
 type ToolbarPropsType = {
@@ -19,6 +19,7 @@ type ToolbarPropsType = {
   setCountry: React.Dispatch<React.SetStateAction<Countries>>;
   errorCount: number;
   setErrorCount: React.Dispatch<React.SetStateAction<number>>;
+  page: number;
 };
 
 function Toolbar({
@@ -28,19 +29,27 @@ function Toolbar({
   fakers,
   setErrorCount,
   errorCount,
+  page,
 }: ToolbarPropsType) {
   const [seed, setSeed] = useState(1);
 
   useEffect(() => {
     const currentFaker = selectCountry(country);
-    currentFaker.seed(seed);
-    setFakers(loadMore(currentFaker, 20, [], errorCount));
+    currentFaker.seed(seed + page);
+    setFakers(loadMore(country, 20, [], errorCount));
   }, []);
 
   useEffect(() => {
-    if (fakers.length > 0)
-      setFakers(uglifyFakers(fakers, selectCountry(country), errorCount, seed));
-  }, [country, errorCount, setFakers, seed]);
+    if (fakers.length > 0) {
+      setFakers(uglifyFakers(fakers, country, errorCount, seed + page));
+    }
+  }, [country, seed]);
+
+  useEffect(() => {
+    if (fakers.length > 0) {
+      setFakers(uglifyFakers(fakers, country, errorCount, seed + page));
+    }
+  }, [errorCount, setFakers]);
 
   return (
     <Row className="mt-4">
@@ -96,7 +105,10 @@ function Toolbar({
             type="number"
             placeholder="0"
           />
-          <Button onClick={() => setSeed(getRandomSeed())} title="Random Seed">
+          <Button
+            onClick={() => setSeed(getRandomSeed(selectCountry(country)))}
+            title="Random Seed"
+          >
             <Shuffle />
           </Button>
         </InputGroup>

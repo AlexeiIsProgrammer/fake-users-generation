@@ -20,6 +20,7 @@ function FakeTable({ fakers, scrollFakersHandle }: FakeTablePropsType) {
             next={scrollFakersHandle}
             hasMore
             loader={<h4>Loading...</h4>}
+            scrollThreshold={1}
           >
             <Table className="mt-2" striped responsive>
               <thead>
