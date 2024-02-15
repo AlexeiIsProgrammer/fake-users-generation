@@ -1,5 +1,5 @@
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Shuffle } from 'react-bootstrap-icons';
 import { download, generateCsv } from 'export-to-csv';
 import getRandomSeed from '../utils/getRandomSeed';
