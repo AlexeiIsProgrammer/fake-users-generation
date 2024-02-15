@@ -7,22 +7,22 @@ import { Countries } from './components/utils/selectCountry';
 import { loadMore } from './components/utils/loadAndUglify';
 
 function App() {
-  const [page, setPage] = useState(1);
+  const [seed, setSeed] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [country, setCountry] = useState<Countries>(Countries.US);
   const [fakers, setFakers] = useState<FakerItem[]>([]);
 
   const scrollFakersHandle = () => {
     setTimeout(() => {
-      setPage(page + 1);
-      setFakers(loadMore(country, 10, fakers, errorCount));
+      setFakers(loadMore(country, 10, fakers, errorCount, seed));
     }, 500);
   };
 
   return (
     <Container>
       <Toolbar
-        page={page}
+        seed={seed}
+        setSeed={setSeed}
         errorCount={errorCount}
         setErrorCount={setErrorCount}
         setFakers={setFakers}

@@ -19,7 +19,8 @@ type ToolbarPropsType = {
   setCountry: React.Dispatch<React.SetStateAction<Countries>>;
   errorCount: number;
   setErrorCount: React.Dispatch<React.SetStateAction<number>>;
-  page: number;
+  seed: number;
+  setSeed: React.Dispatch<React.SetStateAction<number>>;
 };
 
 function Toolbar({
@@ -29,27 +30,19 @@ function Toolbar({
   fakers,
   setErrorCount,
   errorCount,
-  page,
+  seed,
+  setSeed,
 }: ToolbarPropsType) {
-  const [seed, setSeed] = useState(0);
-
   useEffect(() => {
-    const currentFaker = selectCountry(country);
-    currentFaker.seed(seed + page);
-    setFakers(loadMore(country, 20, [], errorCount));
+    if (fakers.length === 0)
+      setFakers(loadMore(country, 20, [], errorCount, seed));
   }, []);
 
   useEffect(() => {
     if (fakers.length > 0) {
-      setFakers(uglifyFakers(fakers, country, errorCount, seed + page));
+      setFakers(uglifyFakers(fakers, country, errorCount, seed));
     }
-  }, [country, seed]);
-
-  useEffect(() => {
-    if (fakers.length > 0) {
-      setFakers(uglifyFakers(fakers, country, errorCount, seed + page));
-    }
-  }, [errorCount, setFakers]);
+  }, [errorCount, setFakers, country, seed]);
 
   return (
     <Row className="mt-4">

@@ -56,11 +56,11 @@ const uglifyFn =
 const uglifyFakers = (
   fakers: FakerItem[],
   country: Countries,
-  errorsCount: number,
+  errorCount: number,
   seed: number
 ): FakerItem[] => {
   const currentFaker = selectCountry(country);
-  const fakerInitialFn = uglifyFn(errorsCount, currentFaker, country);
+  const fakerInitialFn = uglifyFn(errorCount, currentFaker, country);
 
   currentFaker.seed(seed);
 
@@ -77,26 +77,22 @@ const loadMore = (
   country: Countries,
   count: number,
   oldData: FakerItem[],
-  errorCount: number
+  errorCount: number,
+  seed: number
 ): FakerItem[] => {
   const currentFaker = selectCountry(country);
   const fakeData = [...oldData];
+
+  const fakerInitialFn = uglifyFn(errorCount, currentFaker, country);
+  currentFaker.seed(seed);
 
   for (let i = oldData.length; i < oldData.length + count; i += 1) {
     const fakeItem: FakerItem = {
       id: i + 1,
       uuid: getUUID(currentFaker),
-      name: uglifyFn(errorCount, currentFaker, country)(getName(currentFaker)),
-      address: uglifyFn(
-        errorCount,
-        currentFaker,
-        country
-      )(getAddress(currentFaker)),
-      phone: uglifyFn(
-        errorCount,
-        currentFaker,
-        country
-      )(getPhone(currentFaker)),
+      name: fakerInitialFn(getName(currentFaker)),
+      address: fakerInitialFn(getAddress(currentFaker)),
+      phone: fakerInitialFn(getPhone(currentFaker)),
     };
 
     fakeData.push(fakeItem);
