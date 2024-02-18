@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Faker } from '@faker-js/faker';
 
 import { faker as fakerDE } from '@faker-js/faker/locale/de';

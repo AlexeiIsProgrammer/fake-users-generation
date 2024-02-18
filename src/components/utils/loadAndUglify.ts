@@ -26,7 +26,6 @@ const uglifyFn =
 
     const chooseVariant = () => {
       const actionValue = currentFaker.number.int({ min: 1, max: 3 });
-      // console.log(actionValue);
       switch (actionValue) {
         case 1:
           updatedValue = removeSymbol(updatedValue, currentFaker);
@@ -77,14 +76,12 @@ const loadMore = (
   country: Countries,
   count: number,
   oldData: FakerItem[],
-  errorCount: number,
-  seed: number
+  errorCount: number
 ): FakerItem[] => {
   const currentFaker = selectCountry(country);
   const fakeData = [...oldData];
 
   const fakerInitialFn = uglifyFn(errorCount, currentFaker, country);
-  currentFaker.seed(seed);
 
   for (let i = oldData.length; i < oldData.length + count; i += 1) {
     const fakeItem: FakerItem = {
