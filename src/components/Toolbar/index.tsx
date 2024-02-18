@@ -34,8 +34,7 @@ function Toolbar({
   setSeed,
 }: ToolbarPropsType) {
   useEffect(() => {
-    if (fakers.length === 0)
-      setFakers(loadMore(country, 20, [], errorCount, seed));
+    if (fakers.length === 0) setFakers(loadMore(country, 20, [], errorCount));
   }, []);
 
   useEffect(() => {
